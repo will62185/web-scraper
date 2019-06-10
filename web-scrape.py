@@ -2,9 +2,9 @@ import requests
 from bs4 import BeautifulSoup as bs
 
 
-result = requests.get("https://www.subaruofpembrokepines.com/specials/service.htm")
-source = result.content
-soup = bs(source, "lxml")
+source = requests.get("https://www.subaruofpembrokepines.com/specials/service.htm")
+result = source.content
+soup = bs(result, "lxml")
 
 h4_tag = soup.find_all("h4", class_="sssTitle")
 print(h4_tag)
