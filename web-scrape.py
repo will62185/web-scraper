@@ -1,34 +1,29 @@
 import requests
 from bs4 import BeautifulSoup as bs
+from sys import argv
+import datetime
 
+# Example url "https://www.subaruofmiami.com/promotions/service/index.htm"
+url = argv[1] # URL is now supplied at runtime
 
-source = requests.get("https://www.subaruofpembrokepines.com/specials/service.htm")
+source = requests.get(url)
 result = source.content
 soup = bs(result, "lxml")
 
-h4_tag = soup.find_all("h4", class_="sssTitle")
-print(h4_tag)
+print(f"Get your coupons from: {url}")
 
-p_tag = soup.find_all("p", class_="value")
-print(p_tag)
+html = soup.find_all("div", class_="promo-title text-center h1")
+print(html)
 
 """
 Results:
-[<h4 class="sssTitle">
-<span>Meet Or Beat Any Tire Special</span>
-</h4>, <h4 class="sssTitle">
-<span>Battery System Service</span>
-</h4>, <h4 class="sssTitle">
-<span>Brake Fluid Service</span>
-</h4>, <h4 class="sssTitle">
-<span>Guard Against Harmful Effects Of Ethanol Gasoline</span>
-</h4>, <h4 class="sssTitle">
-<span>Air Conditioning Service</span>
-</h4>, <h4 class="sssTitle">
-<span>Subaru of Pembroke Pines Full Detail</span>
-</h4>]
-[<p class="value"></p>, <p class="value">$35.95</p>, <p class="value">$149.95</p>, <p class="v
-alue">$129.95</p>, <p class="value">$69.95</p>, <p class="value">$20.00 Off</p>]
+[<div class="promo-title text-center h1">
+FREE MULTI-POINT INSPECTION
+</div>, <div class="promo-title text-center h1">
+$45 WIPER BLADES SPECIAL
+</div>, <div class="promo-title text-center h1">
+Free Alignment w/ Installation of 4 New Tires
+</div>]
 """
 
 # To Do:
