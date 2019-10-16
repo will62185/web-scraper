@@ -1,5 +1,9 @@
 from bs4 import BeautifulSoup as BS
 import requests
+import pandas as pd 
+
+
+count =0
 
 # List of urls to scrape
 urls = [
@@ -7,16 +11,37 @@ urls = [
     "https://www.lehmansubaru.com/promotions/service/index.htm",
        ] 
 
-# Loop through the urls
-for url in urls:
+# created reusable function and return the promo price and product name as a list 
+
+def getprices(url):
+    price1 = []
+    title = []
     response = requests.get(url)
     soup = BS(response.content, "html.parser")
-    
+
     # The information was burried in a div
     html_tag = soup.find_all("div", class_="promo-title text-center h1")
+    html_price = soup.find_all("div", class_="promo-discountValue text-center h1 has-image")
 
     # The find_all method places the results in a list, so this needed to be looped through
     # to get just the text using the .text method.
-    for tag in html_tag: 
-        print(tag.text.strip())
-    print(f"Visit this link for more information: {url}")
+    for tag in html_tag:
+        for price in html_price:
+            if price.text.strip():
+                #print(tag.text.strip())
+                #print("Promotional price " + price.text.strip())
+                price1.append(price.text.strip())
+                title.append(tag.text.strip())
+
+    return price1,title
+
+# loop through the urls and parse the data 
+while count < len(urls):
+    # call the function for the specified url 
+    will= getprices(urls[count])
+#print(will[0])
+    #using paqdas to format the output 
+    print(urls[count])
+    print(pd.DataFrame({'Product': will[1], \
+                    'Promo': will[0]}))
+    count += 1
