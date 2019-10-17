@@ -2,7 +2,15 @@ from bs4 import BeautifulSoup as BS
 import requests
 import pandas as pd 
 
-
+headers = {
+        'user-agent': 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36',
+        'referrer': 'https://google.com',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Pragma': 'no-cache',
+        'Cache-Control': 'no-cache'
+    }
 count =0
 
 # List of urls to scrape
@@ -16,7 +24,7 @@ urls = [
 def getprices(url):
     price1 = []
     title = []
-    response = requests.get(url)
+    response = requests.get(url, timeout=15, headers=headers)
     soup = BS(response.content, "html.parser")
 
     # The information was burried in a div
