@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup as BS
 import requests
 import pandas as pd 
+from emailprices import emailprices
 
 headers = {
         'user-agent': 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36',
@@ -11,7 +12,6 @@ headers = {
         'Pragma': 'no-cache',
         'Cache-Control': 'no-cache'
     }
-count =0
 
 # List of urls to scrape
 urls = [
@@ -43,13 +43,15 @@ def getprices(url):
 
     return price1,title
 
+msg = """"""
 # loop through the urls and parse the data 
-while count < len(urls):
+for i in range(0, len(urls)):
     # call the function for the specified url 
-    will= getprices(urls[count])
-#print(will[0])
-    #using paqdas to format the output 
-    print(urls[count])
-    print(pd.DataFrame({'Product': will[1], \
-                    'Promo': will[0]}))
-    count += 1
+    will= getprices(urls[i])
+    #using pandas to format the output 
+    df = (pd.DataFrame({'Product': will[1],'Promo': will[0]}))
+    #Concatenates each dataframe for the message
+    msg += "\n\n"+urls[i] + "\n\n" + df.to_string() + "\n\n"
+
+#Calls the emailprices function from emailprices.py and sends the email.
+emailprices(msg)
