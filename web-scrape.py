@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup as BS
 import requests
-import pandas as pd 
+import pandas as pd
+import send-email
 
 headers = {
         'user-agent': 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36',
@@ -18,6 +19,8 @@ urls = [
     "https://www.subaruofmiami.com/promotions/service/index.htm",
     "https://www.lehmansubaru.com/promotions/service/index.htm",
        ] 
+
+returnData = ""
 
 # created reusable function and return the promo price and product name as a list 
 
@@ -47,9 +50,20 @@ def getprices(url):
 while count < len(urls):
     # call the function for the specified url 
     will= getprices(urls[count])
-#print(will[0])
+    #print(will[0])
     #using paqdas to format the output 
-    print(urls[count])
-    print(pd.DataFrame({'Product': will[1], \
-                    'Promo': will[0]}))
+    # print(urls[count])
+    # print(pd.DataFrame({'Product': will[1], \
+    #                 'Promo': will[0]}))
+    returnData += urls[count]
+    returnData += pd.DataFrame({'Product': will[1], 'Promo': will[0]}).to_html()
     count += 1
+
+sendEmail.sendEmail(f"""
+<html>
+    <head></head>
+    <body>
+        {returnData}
+    </body>
+</html>
+""")
