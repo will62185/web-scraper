@@ -9,7 +9,6 @@ env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path)
 
 EMAIL_FROM = os.getenv("EMAIL_FROM")
-print(EMAIL_FROM)
 EMAIL_TO = os.getenv("EMAIL_TO")
 EMAIL_PASSWORD = os.getenv("EMAIL_ADDRESS_PASSWORD")
 
@@ -30,7 +29,7 @@ def sendEmail(body):
         )
         if response:
             f"Error: {response}"
-        print('sent an email!')
+        print('Email Sent!')
     except expression as identifier:
         f"Error: {identifier}"
     server.quit()
